@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<meta name="keywords" content="Python,nothpy,neko">
+<meta name="description" content="nothpyはねこねこHouseのオウンドメディア。猫のかわいい写真をたくさん投稿しています。">
+{% endblock %}
+
+{% block twitter %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@JoeBiden">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:title" content="nothpy">
+<meta property="og:description" content="ねこねこhouse">
+<meta property="og:image"
+    content="{{ request.scheme }}://{{ request.get_host }}{% static 'assets/img/nothpy.png' %}">
+{% endblock %}
+
+{% block main %}
+
+<style>
+    .logo-text {
+        color: #c7d2db !important;
+    }
+</style>
+
+<header class="bg-center-cover" style="background-image:url('{% static 'assets/img/nothpy.png' %}')">
+    <div class="dark-filter header">
+        <div class="container">
+            <div class="text-center py-5 text-light">
+                <h2 class="logo-font mb-4 header-title">nothpy</h2>
+                <h5 class="mb-4">ねこねこ House オウンドメディア</h5>
+                <span>ねこに関するかわいい情報をお届けします</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-lg-5">
+                <div class="text-center">
+                    <img src="{% static 'assets/img/nekoneko.jpg' %}" class="max-w-100" alt="">
+                </div>
+            </div>
+            <div class="col-md-8 col-lg-7">
+                <div class="pt-5">
+                    <p class="lead text-dark mb-0">
+                        nothpyはねこねこHouseのオウンドメディア。猫のかわいい写真をたくさん投稿しています。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 mb-5">
+                <div id="articleWrapper">
+                    {% for article in articles %}
+                    <div class="article">
+                        <a href="{% url 'article:article_detail' article.uuid %}">
+                            <div class="d-flex">
+                                <div>
+                                    <div class="px-3">
+                                        <h4 class="article-title">{{ article.title }}</h4>
+                                        <p class="text-secondary article-text font-12 mb-0">{{ article.meta_description}}</p>
+                                        <span class="text-secondary font-14">{{ article.created|date:'Y/m/d' }}</span>
+                                    </div>
+                                </div>
+                                <div class="flex-main">
+                                    <div>
+                                        <img src="{% if article.image %}{{ article.image.url }}{% else %}{%static 'assets/img/sample.jpg' %}{% endif %}"
+                                            class="img-center-cover article-img" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center p-3">
+                    <a href="{% url 'article:article_list' %}" class="btn btn-lg btn-outline-primary">すべての記事を一覧する <i
+                            class="fas fa-list-ul"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-5">
+                <div class="border bg-light rounded p-3">
+                    <div class="text-center">
+                        <h5 class="text-dark">人気の記事</h5>
+                    </div>
+                    <div class="py-2">
+                        {% for article in popular_articles %}
+                        <span class="d-block mb-3 font-16"><a href="{% url 'article:article_detail' article.uuid %}">
+                                {{ forloop.counter }}位 {{ article.title }}</a></span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
